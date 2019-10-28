@@ -1,1 +1,1 @@
-# Multi-App Theme-Manager (MaTM)
+# Multi Application Theme Manager (MaTM)
