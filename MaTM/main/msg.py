@@ -1,19 +1,6 @@
+import dbus
 from MaTM.main.args import parse_msg_args
 from MaTM.main.daemon import MatmInterface
-from enum import Enum
-
-
-class MsgCommand(Enum):
-    LIST_CMDS = 'list-cmds'
-    GET_THEME = 'get-theme'
-    SET_THEME = 'set-theme'
-    QUIT = 'quit'
-    HELP_DICT = {
-        LIST_CMDS: 'List all available commands',
-        GET_THEME: 'Gets the current theme',
-        SET_THEME: 'Sets the current theme',
-        QUIT: 'Quit the matm daemon'
-    }
 
 
 def get_iface() -> MatmInterface:
@@ -21,30 +8,46 @@ def get_iface() -> MatmInterface:
     return DbusService().as_client().iface
 
 
-def cmd_list_commands():
-    def not_help_dict(c):
-        return c is not MsgCommand.HELP_DICT
+class MatmMsgCommands(object):
+    def __init__(self):
+        pass
 
-    for c in filter(not_help_dict, MsgCommand):
-        helptext = MsgCommand.HELP_DICT.value[c.value]
-        print('{}:  {}'.format(c.value.rjust(10), helptext))
+    def _print_theme_response(self, theme):
+        for k, v in theme.items():
+            print('{}: {}'.format(k.rjust(16), v))
+
+    def set_theme(self, args):
+        if args.brightness is None\
+                and args.primary_colour is None\
+                and args.secondary_colour is None:
+            print('A brightness, primary, or secondary colour is required')
+            return
+        try:
+            theme = get_iface().SetTheme(
+                args.brightness or '',
+                args.primary_colour or '',
+                args.secondary_colour or ''
+            )
+            self._print_theme_response(theme)
+        except dbus.DBusException as e:
+            print('Error: {}'.format(e.args[0]))
+
+    def get_theme(self, args):
+        theme = get_iface().GetTheme()
+        self._print_theme_response(theme)
+
+    def get_colours(self, args):
+        print('get colours')
+        print('args: {}'.format(args))
+
+    def get_brightnesses(self, args):
+        print('get brightnesses')
+        print('args: {}'.format(args))
+
+    def quit_daemon(self, args):
+        get_iface().Quit()
 
 
-def cmd_get_theme():
-    [
-        print('  {}: {}'.format(k.rjust(16), v))
-        for k, v in get_iface().GetTheme().items()
-    ]
-
-
-CMD_FUNC_LIST = {
-    MsgCommand.LIST_CMDS: cmd_list_commands,
-    MsgCommand.GET_THEME: cmd_get_theme,
-    MsgCommand.QUIT: lambda: get_iface().Quit()
-}
-
-
-def main():
-    args = parse_msg_args()
-    cmd = MsgCommand(args.command)
-    CMD_FUNC_LIST[cmd]()
+def main(argv=None):
+    cmds = MatmMsgCommands()
+    parse_msg_args(cmds, argv)

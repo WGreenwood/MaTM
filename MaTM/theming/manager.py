@@ -44,10 +44,13 @@ class ThemeManager(object):
         t = self.current_theme
 
         b = t.brightness if brightness is None\
+            or len(brightness) == 0\
             else Brightness.find(brightness)
         p = t.primary_colour if primary_colour is None\
+            or len(primary_colour) == 0\
             else MaterialColours.find(primary_colour)
         s = t.secondary_colour if secondary_colour is None\
+            or len(secondary_colour) == 0\
             else MaterialColours.find(secondary_colour)
 
         ERRMSG = 'Unrecognized material colour: "{}"'
@@ -60,7 +63,7 @@ class ThemeManager(object):
 
         self.apply_theme(ThemeData(b, p, s))
 
-    def change_theme(self, theme: ThemeData):
+    def apply_theme(self, theme: ThemeData):
         self.current_theme = theme
         theme.to_cfg(self.config)
         self.save_config()

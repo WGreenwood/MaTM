@@ -1,12 +1,16 @@
-import dbus  # noqa:E403
-from dbus.service import Object as DbusObject  # noqa:E403
+import dbus
+from dbus.service import Object as DbusObject
 
-from MaTM.services.daemon import DaemonService  # noqa:E403
-from MaTM.services.dbus import iface_method, REV_DOMAIN  # noqa:E403,E501
+from MaTM.services.daemon import DaemonService
+from MaTM.services.dbus import iface_method, REV_DOMAIN
 
 
 class MaTMDaemonException(dbus.DBusException):
     _dbus_error_name = f"{REV_DOMAIN}.MaTMDaemonException"
+    message: str
+
+    def __init__(self, message: str):
+        self.message = message
 
 
 class MatmInterface(DbusObject):
@@ -24,15 +28,9 @@ class MatmInterface(DbusObject):
                 primary_colour,
                 secondary_colour
             )
-            return {
-                'success': True,
-                'theme': tm.current_theme.to_dict()
-            }
+            return tm.current_theme.to_dict()
         except ValueError as e:
-            return {
-                'success': False,
-                'message': e.args
-            }
+            raise MaTMDaemonException(e.args[0])
 
     @iface_method
     def GetTheme(self):
