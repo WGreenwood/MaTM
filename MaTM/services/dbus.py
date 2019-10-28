@@ -49,6 +49,10 @@ class DbusService(object):
         return self
 
 
+def quick_client():
+    return DbusService().as_client().iface
+
+
 def iface_method(view):
     @dbus.service.method(DbusService.IFACE_NAME)
     @functools.wraps(view)

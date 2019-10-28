@@ -1,10 +1,6 @@
 import dbus
 from MaTM.main.args import parse_msg_args
-
-
-def get_iface():
-    from MaTM.services.dbus import DbusService
-    return DbusService().as_client().iface
+from MaTM.services.dbus import quick_client
 
 
 class MatmMsgCommands(object):
@@ -19,7 +15,7 @@ class MatmMsgCommands(object):
             print('A brightness, primary, or secondary colour is required\n')
             return False
         try:
-            theme = get_iface().SetTheme(
+            theme = quick_client().SetTheme(
                 args.brightness or '',
                 args.primary_colour or '',
                 args.secondary_colour or ''
@@ -31,7 +27,7 @@ class MatmMsgCommands(object):
         return True
 
     def get_theme(self, args):
-        theme = get_iface().GetTheme()
+        theme = quick_client().GetTheme()
         self._print_theme_response(theme)
         return True
 
@@ -46,7 +42,7 @@ class MatmMsgCommands(object):
         return True
 
     def quit_daemon(self, args):
-        get_iface().Quit()
+        quick_client().Quit()
         return True
 
 
