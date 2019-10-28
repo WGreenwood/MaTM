@@ -73,7 +73,7 @@ class ThemeData(object):
         return ThemeData(brightness, primary, secondary)
 
     def __repr__(self):
-        return "ThemeData<brightness: {}, primary_colour: {}, secondary_colour: {}>".format(  # noqa:E501
+        return "{{ brightness: {}, primary_colour: {}, secondary_colour: {} }} ".format(  # noqa:E501
             self.brightness.name,
             self.primary_colour.name,
             self.secondary_colour.name

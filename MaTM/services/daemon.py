@@ -4,7 +4,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk  # noqa:E402
 
 from MaTM.services.dbus import DbusService  # noqa:E402
-from MaTM.theming import ThemeManager  # noqa:E402
+from MaTM.theming import create_default_manager, ThemeManager  # noqa:E402
 
 
 class DaemonService(object):
@@ -14,7 +14,7 @@ class DaemonService(object):
     def __init__(self, iface_class):
         self.dbus = DbusService().as_server(iface_class)
         self.dbus.iface.daemon = self
-        self.theme_manager = ThemeManager()
+        self.theme_manager = create_default_manager()
 
     def main(self, suppress_kb_interrupt=True):
         print('Starting daemon')
