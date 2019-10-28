@@ -1,9 +1,8 @@
 import dbus
 from MaTM.main.args import parse_msg_args
-from MaTM.main.daemon import MatmInterface
 
 
-def get_iface() -> MatmInterface:
+def get_iface():
     from MaTM.services.dbus import DbusService
     return DbusService().as_client().iface
 
