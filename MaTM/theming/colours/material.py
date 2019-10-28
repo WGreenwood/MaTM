@@ -1,4 +1,4 @@
-from MaTM.colours import Brightness, Colour
+from MaTM.theming.colours import Brightness, Colour
 from MaTM.helpers import normalized
 
 
