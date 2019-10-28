@@ -89,6 +89,6 @@ def parse_msg_args(commands, argv: typing.List[str] = None):
     if hasattr(parsed_args, 'func'):
         func = parsed_args.func
         del parsed_args.func
-        func(parsed_args)
-    else:
-        parser.print_help()
+        if func(parsed_args):
+            return
+    parser.print_help()
