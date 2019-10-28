@@ -1,0 +1,10 @@
+[Unit]
+Description=Multi-Application Theme Manager
+
+[Service]
+ExecStart=/usr/bin/matm-daemon
+Type=dbus
+BusName=com.github.WGreenwood.MaTMService
+
+[Install]
+WantedBy=multi-user.target

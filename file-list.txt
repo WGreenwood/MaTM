@@ -1,0 +1,7 @@
+cfg/
+docs/
+MaTM/
+tests/
+setup.py
+README.md
+VERSION

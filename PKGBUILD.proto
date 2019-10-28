@@ -1,0 +1,24 @@
+# Maintainer: Wesley Greenwood <WesleyFGreenwood at gmail dot ca>
+pkgname=MaTM
+pkgver=%VERSION%
+pkgrel=1
+pkgdesc="Applies a consistent theme to multiple applications"
+url="https://github.com/WGreenwood/MaTM.git"
+arch=('any')
+license=('unknown')
+depends=('python' 'python-pip' 'python-dbus' 'python-gobject')
+sha256sums=('%CHECKSUM%')
+source=("%SRCFILE%")
+install=MaTM.sh
+
+prepare() {
+	FILENAME="$pkgname-$pkgver.tar.gz"
+	echo "Extracting $FILENAME"
+	tar -zxf "$FILENAME"
+}
+
+package() {
+	python setup.py install --optimize=1 --root="$pkgdir"
+	mkdir -p "${pkgdir}/usr/lib/systemd/user/"
+	install -Dm644 cfg/matm-daemon.service "${pkgdir}/usr/lib/systemd/user/"
+}
