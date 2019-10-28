@@ -95,10 +95,10 @@ class Colour(object):
             r, g, b = map(lambda c: int(c*2, 16), hexstr)
             return Colour(255, r, g, b)
         elif hexlen == 6:  # #RRGGBB
-            r, g, b = hexstr_chunks()
+            r, g, b = hexstr_chunks(toint=True)
             return Colour(255, r, g, b)
         elif hexlen == 8:  # #AARRGGBB
-            a, r, g, b = hexstr_chunks()
+            a, r, g, b = hexstr_chunks(toint=True)
             return Colour(a, r, g, b)
 
         MSG = 'Colour::from_hex "{}" is not a recognized colour format'
