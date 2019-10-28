@@ -5,13 +5,13 @@ from subprocess import check_output
 APP_NAME = 'MaTM'
 
 HOME: str = environ['HOME']
-CONFIG_HOME: str = environ.get(
+XDG_CONFIG_HOME: str = environ.get(
     'XDG_CONFIG_HOME', default=path.join(
         HOME, '.config'
     )
 )
 
-APP_CONFIG_DIR: str = path.join(CONFIG_HOME, APP_NAME)
+APP_CONFIG_DIR: str = path.join(XDG_CONFIG_HOME, APP_NAME)
 APP_CONFIG_INI_PATH: str = path.join(APP_CONFIG_DIR, 'config.ini')
 APP_LOGS_DIR: str = path.join(APP_CONFIG_DIR, 'logs')
 
@@ -25,10 +25,6 @@ class XdgUserDir(Enum):
     PublicShare = 5
     Templates = 6
     Videos = 7
-
-
-def cfg_dir(dirname: str) -> str:
-    return path.join(CONFIG_HOME, dirname)
 
 
 def xdg_dir(xdgdir: XdgUserDir) -> str:
