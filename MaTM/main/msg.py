@@ -26,7 +26,8 @@ def cmd_list_commands():
         return c is not MsgCommand.HELP_DICT
 
     for c in filter(not_help_dict, MsgCommand):
-        print('{}:  {}'.format(c.value.rjust(10), MsgCommand.HELP_DICT.value[c.value]))
+        helptext = MsgCommand.HELP_DICT.value[c.value]
+        print('{}:  {}'.format(c.value.rjust(10), helptext))
 
 
 def cmd_get_theme():
