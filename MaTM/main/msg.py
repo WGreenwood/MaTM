@@ -6,10 +6,12 @@ from enum import Enum
 class MsgCommand(Enum):
     LIST_CMDS = 'list-cmds'
     GET_THEME = 'get-theme'
+    SET_THEME = 'set-theme'
     QUIT = 'quit'
     HELP_DICT = {
         LIST_CMDS: 'List all available commands',
-        GET_THEME: '',
+        GET_THEME: 'Gets the current theme',
+        SET_THEME: 'Sets the current theme',
         QUIT: 'Quit the matm daemon'
     }
 
@@ -19,16 +21,24 @@ def get_iface() -> MatmInterface:
     return DbusService().as_client().iface
 
 
-CMD_FUNC_LIST = {
-    MsgCommand.LIST_CMDS: lambda: [
-        print('  {}:  {}'.format(c.value, MsgCommand.HELP_DICT.value[c.value]))
-        for c in MsgCommand
-        if c != MsgCommand.HELP_DICT
-    ],
-    MsgCommand.GET_THEME: lambda: [
+def cmd_list_commands():
+    def not_help_dict(c):
+        return c is not MsgCommand.HELP_DICT
+
+    for c in filter(not_help_dict, MsgCommand):
+        print('{}:  {}'.format(c.value.rjust(10), MsgCommand.HELP_DICT.value[c.value]))
+
+
+def cmd_get_theme():
+    [
         print('  {}: {}'.format(k.rjust(16), v))
         for k, v in get_iface().GetTheme().items()
-    ],
+    ]
+
+
+CMD_FUNC_LIST = {
+    MsgCommand.LIST_CMDS: cmd_list_commands,
+    MsgCommand.GET_THEME: cmd_get_theme,
     MsgCommand.QUIT: lambda: get_iface().Quit()
 }
 

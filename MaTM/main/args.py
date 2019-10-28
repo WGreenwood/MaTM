@@ -10,14 +10,16 @@ class MatmMsgArguments(object):
         self.command = args.command
 
 
-def _cut_args(argv: typing.List[str])\
+def split_args(argv: typing.List[str] = None)\
         -> typing.Tuple[str, typing.List[str]]:
+    if argv is None:
+        argv = sys.argv
     return argv[0], argv[1:]
 
 
-def parse_msg_args(argv=None):
+def parse_msg_args(argv: typing.List[str] = None):
     from MaTM.main.msg import MsgCommand
-    prog, args = _cut_args(argv or sys.argv)
+    prog, args = split_args(argv)
 
     parser = ArgumentParser(
         prog=prog,
