@@ -1,5 +1,5 @@
 from configparser import ConfigParser
-from MaTM.colours import\
+from MaTM.theming.colours import\
     Brightness, Colour, Colours,\
     MaterialColour, MaterialColours
 
