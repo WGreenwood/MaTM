@@ -44,5 +44,8 @@ class MatmInterface(DbusObject):
 
 
 def main():
+    # TODO: Configure logger.
+    # Note: os.getppid == 1, running as service
+    # else, running otherwise.  (check for tty output, and have log file)
     daemon = DaemonService(MatmInterface)
     daemon.main(True)
