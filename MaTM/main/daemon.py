@@ -13,9 +13,30 @@ class MatmInterface(DbusObject):
     daemon: DaemonService
 
     @iface_method
+    def SetTheme(self,
+                 brightness: str,
+                 primary_colour: str,
+                 secondary_colour: str):
+        tm = self.daemon.theme_manager
+        try:
+            tm.find_and_apply(
+                brightness,
+                primary_colour,
+                secondary_colour
+            )
+            return {
+                'success': True,
+                'theme': tm.current_theme.to_dict()
+            }
+        except ValueError as e:
+            return {
+                'success': False,
+                'message': e.args
+            }
+
+    @iface_method
     def GetTheme(self):
         t = self.daemon.theme_manager.current_theme
-        print('Get Theme Received: {}'.format(t))
         return t.to_dict()
 
     @iface_method
