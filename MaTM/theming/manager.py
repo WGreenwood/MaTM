@@ -3,8 +3,8 @@ from os import path
 import typing
 
 from MaTM import environ
-from MaTM.colours import Brightness, MaterialColours
 from MaTM.theming import ThemeData
+from MaTM.theming.colours import Brightness, MaterialColours
 
 
 class ThemeManager(object):
@@ -12,7 +12,6 @@ class ThemeManager(object):
     current_theme: ThemeData
 
     config: ConfigParser
-    config_loaded: bool
 
     def __init__(self):
         self.change_handlers = []
@@ -21,11 +20,9 @@ class ThemeManager(object):
 
     def load_config(self):
         self.config.clear()
-        self.config_dirty = False
         self.config_loaded = False
         if path.isfile(environ.APP_CONFIG_INI_PATH):
             self.config.read(environ.APP_CONFIG_INI_PATH)
-            self.config_loaded = True
         self.current_theme = ThemeData.from_cfg(self.config)
 
     def save_config(self):
@@ -38,7 +35,7 @@ class ThemeManager(object):
 
     def on_startup(self):
         for handler in self.change_handlers:
-            handler.on_startup(self)
+            handler.startup(self)
 
     def find_and_apply(self,
                        brightness: str,
@@ -68,4 +65,4 @@ class ThemeManager(object):
         theme.to_cfg(self.config)
         self.save_config()
         for handler in self.change_handlers:
-            handler.on_apply_theme(self)
+            handler.apply_theme(self)

@@ -16,6 +16,10 @@ APP_CONFIG_INI_PATH: str = path.join(APP_CONFIG_DIR, 'config.ini')
 APP_LOGS_DIR: str = path.join(APP_CONFIG_DIR, 'logs')
 
 
+def xdg_cfg_dir(name: str):
+    return path.join(XDG_CONFIG_HOME, name)
+
+
 class XdgUserDir(Enum):
     Desktop = 0
     Documents = 1
