@@ -31,7 +31,7 @@ class ThemeManager(object):
             self.config.write(f)
 
     def add_theme_handler(self, handler):
-        self.event_handlers.append(handler)
+        self.change_handlers.append(handler)
 
     def on_startup(self):
         for handler in self.change_handlers:
@@ -64,8 +64,14 @@ class ThemeManager(object):
         self.apply_theme(ThemeData(b, p, s))
 
     def apply_theme(self, theme: ThemeData):
+        print('New Theme: {}'.format(theme))
         self.current_theme = theme
         theme.to_cfg(self.config)
         self.save_config()
         for handler in self.change_handlers:
+            handlertype = type(handler)
+            handlername = handlertype.__appname__\
+                if hasattr(handlertype, '__appname__')\
+                else handlertype.__name__
+            print('Applying theme to {}'.format(handlername))
             handler.apply_theme(self)
