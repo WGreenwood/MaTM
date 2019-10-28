@@ -10,6 +10,6 @@ def find(keyvalues: dict, key: str):
     key = name(key)
     for k, v in keyvalues.items():
         normalk = name(k)
-        if normalk == name:
+        if normalk == key:
             return v
     return None
