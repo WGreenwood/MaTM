@@ -13,6 +13,12 @@ class MatmInterface(DbusObject):
     daemon: DaemonService
 
     @iface_method
+    def GetTheme(self):
+        t = self.daemon.theme_manager.current_theme
+        print('Get Theme Received: {}'.format(t))
+        return t.to_dict()
+
+    @iface_method
     def Quit(self):
         print('Quit received')
         self.daemon.main_quit()

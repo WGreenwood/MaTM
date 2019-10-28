@@ -36,12 +36,15 @@ class ThemeData(object):
         self.primary_colour = primary_colour or MaterialColours.purple()
         self.secondary_colour = secondary_colour or MaterialColours.green()
 
-    def to_cfg(self, cfg: ConfigParser):
-        cfg[ThemeData.SECTION_KEY] = {
+    def to_dict(self):
+        return {
             ThemeData.BRIGHTNESS_KEY: self.brightness.name,
             ThemeData.PRIMARY_COLOUR_KEY: self.primary_colour.name,
             ThemeData.SECONDARY_COLOUR_KEY: self.secondary_colour.name
         }
+
+    def to_cfg(self, cfg: ConfigParser):
+        cfg[ThemeData.SECTION_KEY] = self.to_dict()
 
     @staticmethod
     def from_cfg(cfg: ConfigParser):
@@ -60,11 +63,11 @@ class ThemeData(object):
             Brightness
         )
         primary = find_value(
-            ThemeData.PRIMARY_KEY,
+            ThemeData.PRIMARY_COLOUR_KEY,
             MaterialColours
         )
         secondary = find_value(
-            ThemeData.SECONDARY_KEY,
+            ThemeData.SECONDARY_COLOUR_KEY,
             MaterialColours
         )
         return ThemeData(brightness, primary, secondary)

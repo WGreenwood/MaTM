@@ -4,10 +4,12 @@ from enum import Enum
 
 
 class MsgCommand(Enum):
-    LISTCMDS = 'listcmds'
+    LIST_CMDS = 'list-cmds'
+    GET_THEME = 'get-theme'
     QUIT = 'quit'
     HELP_DICT = {
-        LISTCMDS: 'List all available commands',
+        LIST_CMDS: 'List all available commands',
+        GET_THEME: '',
         QUIT: 'Quit the matm daemon'
     }
 
@@ -18,10 +20,14 @@ def get_iface() -> MatmInterface:
 
 
 CMD_FUNC_LIST = {
-    MsgCommand.LISTCMDS: lambda: [
+    MsgCommand.LIST_CMDS: lambda: [
         print('  {}:  {}'.format(c.value, MsgCommand.HELP_DICT.value[c.value]))
         for c in MsgCommand
         if c != MsgCommand.HELP_DICT
+    ],
+    MsgCommand.GET_THEME: lambda: [
+        print('  {}: {}'.format(k.rjust(16), v))
+        for k, v in get_iface().GetTheme().items()
     ],
     MsgCommand.QUIT: lambda: get_iface().Quit()
 }
