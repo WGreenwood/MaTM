@@ -33,19 +33,19 @@ class MaterialColour(object):
             return self.shade8
         return self.shade1
 
-    def to_dict(self):
+    def to_dict(self, prefix=''):
         brightness: Brightness = self.shade4.get_brightness()
         accent_text: Colour = Brightness.get_negative_colour(brightness)
         return {
-            'shade1': self.shade1.to_hex(),
-            'shade2': self.shade2.to_hex(),
-            'shade3': self.shade3.to_hex(),
-            'shade4': self.shade4.to_hex(),
-            'shade5': self.shade5.to_hex(),
-            'shade6': self.shade6.to_hex(),
-            'shade7': self.shade7.to_hex(),
-            'shade8': self.shade8.to_hex(),
-            'accent-text': accent_text.to_hex()
+            prefix + 'shade1': self.shade1.to_hex(),
+            prefix + 'shade2': self.shade2.to_hex(),
+            prefix + 'shade3': self.shade3.to_hex(),
+            prefix + 'shade4': self.shade4.to_hex(),
+            prefix + 'shade5': self.shade5.to_hex(),
+            prefix + 'shade6': self.shade6.to_hex(),
+            prefix + 'shade7': self.shade7.to_hex(),
+            prefix + 'shade8': self.shade8.to_hex(),
+            prefix + 'accent-text': accent_text.to_hex()
         }
 
     def __repr__(self):
