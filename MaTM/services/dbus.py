@@ -3,6 +3,7 @@ import dbus.service  # noqa:E403
 import dbus.mainloop.glib  # noqa:E403
 
 import functools
+from sys import stderr
 
 REV_DOMAIN = 'com.github.WGreenwood'
 
@@ -41,9 +42,9 @@ class DbusService(object):
             )
         except dbus.DBusException as e:
             if e.get_dbus_name() == self.UNKNOWN_SVC_NAME:
-                print('No MaTM dbus service was located')
+                print('No MaTM dbus service was located', file=stderr)
             else:
-                print(e)
+                print(e, file=stderr)
             exit(1)
         self.iface = dbus.Interface(bus_obj, self.IFACE_NAME)
         return self
