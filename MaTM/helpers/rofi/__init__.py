@@ -66,7 +66,6 @@ class Rofi(object):
         ph = RofiPrintHelpers
         ph.print_header_title(self.prompt_title)
         ph.print_header('markup-rows', 'true')
-        ph.print_header('testing', 'true')
         if selected_idx > -1:
             ph.print_header_urgent(selected_idx)
 
