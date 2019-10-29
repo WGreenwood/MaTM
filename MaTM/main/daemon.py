@@ -34,8 +34,7 @@ class MatmInterface(DbusObject):
 
     @iface_method
     def GetTheme(self):
-        t = self.daemon.theme_manager.current_theme
-        return t.to_dict()
+        return self.daemon.theme_manager.current_theme.to_dict()
 
     @iface_method
     def Quit(self):
