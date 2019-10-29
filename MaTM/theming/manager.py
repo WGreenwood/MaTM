@@ -38,19 +38,19 @@ class ThemeManager(object):
             handler.startup(self)
 
     def find_and_apply(self,
-                       brightness: str,
-                       primary_colour: str,
-                       secondary_colour: str):
+                       brightness: str = None,
+                       primary_colour: str = None,
+                       secondary_colour: str = None):
         t = self.current_theme
 
-        b = t.brightness if brightness is None\
-            or len(brightness) == 0\
+        def is_empty(val):
+            return val is None or len(val) == 0
+
+        b = t.brightness if is_empty(brightness)\
             else Brightness.find(brightness)
-        p = t.primary_colour if primary_colour is None\
-            or len(primary_colour) == 0\
+        p = t.primary_colour if is_empty(primary_colour)\
             else MaterialColours.find(primary_colour)
-        s = t.secondary_colour if secondary_colour is None\
-            or len(secondary_colour) == 0\
+        s = t.secondary_colour if is_empty(secondary_colour)\
             else MaterialColours.find(secondary_colour)
 
         ERRMSG = 'Unrecognized material colour: "{}"'
