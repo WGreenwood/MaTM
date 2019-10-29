@@ -2,7 +2,7 @@ from configparser import ConfigParser
 from os import path
 import typing
 
-from MaTM import environ
+from MaTM.helpers import environ
 from MaTM.theming import ThemeData
 from MaTM.theming.colours import Brightness, MaterialColours
 

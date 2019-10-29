@@ -2,7 +2,7 @@ from configparser import ConfigParser
 from os import path, devnull
 from subprocess import call
 
-from MaTM import environ
+from MaTM.helpers import environ
 from MaTM.theming import AppThemeManager, ThemeManager
 
 
