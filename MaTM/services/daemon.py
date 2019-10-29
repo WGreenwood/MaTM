@@ -25,4 +25,5 @@ class DaemonService(object):
         print('\nDaemon shutting down')
 
     def main_quit(self):
+        self.theme_manager.save_config()
         Gtk.main_quit()
