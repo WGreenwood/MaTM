@@ -69,9 +69,4 @@ class ThemeManager(object):
         theme.to_cfg(self.config)
         self.save_config()
         for handler in self.change_handlers:
-            handlertype = type(handler)
-            handlername = handlertype.__appname__\
-                if hasattr(handlertype, '__appname__')\
-                else handlertype.__name__
-            print('Applying theme to {}'.format(handlername))
             handler.apply_theme(self)
