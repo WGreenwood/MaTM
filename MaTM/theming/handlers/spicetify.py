@@ -1,4 +1,5 @@
 import json
+import shutil
 import typing
 
 from MaTM.helpers import process
@@ -13,13 +14,16 @@ class SpicetifyThemeHandler(AppThemeManager):
         # TODO: Allow specifying xdotool path
         # TODO: Add optional dependencies:
         # spicetify, xdotool, i3
+        self.spicetify_path = shutil.which('spicetify')
+        self.xdotool_path = shutil.which('xdotool')
+        self.i3msg_path = shutil.which('i3-msg')
 
     def on_startup(self, manager: ThemeManager):
         pass
 
     def on_apply_theme(self, manager: ThemeManager):
         # TODO: Actually write the template file
-        process.run(['spicetify', 'update'])
+        process.run([self.spicetify_path, 'update'])
         self._safe_reload_spotify_windows()
 
     def _safe_reload_spotify_windows(self):
@@ -32,10 +36,7 @@ class SpicetifyThemeHandler(AppThemeManager):
 
         self._set_active_window(active_window)
         for num in active_workspaces.values():
-            process.run(['i3-msg', 'workspace', str(num)])
-
-    def _xdotool(self, args: typing.List[str]):
-        process.run(['xdotool'] + args)
+            process.run([self.i3msg_path, 'workspace', str(num)])
 
     def _get_active_workspaces(self) -> typing.Dict[str, int]:
         active_workspaces = {}
@@ -57,15 +58,16 @@ class SpicetifyThemeHandler(AppThemeManager):
 
     def _get_spotify_windows(self) -> typing.List[int]:
         return process.get_list_output([
-            'xdotool', 'search',
+            self.xdotool_path, 'search',
             '--class', 'spotify'
         ])
 
     def _set_active_window(self, window):
-        self._xdotool(['windowactivate', str(window)])
+        process.run([self.xdotool_path, 'windowactivate', str(window)])
 
     def _reload_spotify_window(self, window):
-        self._xdotool([
+        process.run([
+            self.xdotool_path,
             'key', '-window', window,
             'ctrl+shift+r'
         ])
