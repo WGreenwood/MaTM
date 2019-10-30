@@ -34,7 +34,7 @@ build: zipped
 	@sed -e 's;%VERSION%;${VERSION};g'\
 		-e 's;%CHECKSUM%;$(shell cat ${TEMP_CHECKSUM_OUT});g'\
 		-e 's;%SRCFILE%;file://${TEMP_PY_OUT};g'\
-		PKGBUILD.proto > ${ARCHPKG_WORKDIR}/PKGBUILD
+		PKGBUILD.template > ${ARCHPKG_WORKDIR}/PKGBUILD
 
 # Copy the install script
 	@echo "Copying install script"

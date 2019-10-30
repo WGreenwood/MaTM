@@ -18,7 +18,7 @@ CONSOLE_SCRIPTS = {
     'matm-daemon': 'MaTM.main:daemon'
 }
 
-# Nothing should be put in this list, they should be listed in PKGBUILD.proto
+# Nothing should be put in this list, they should be listed in PKGBUILD.template
 INSTALL_REQUIRES = []
 # Dev can be used, it is run in a virtual environment
 DEV_REQUIRES = [
