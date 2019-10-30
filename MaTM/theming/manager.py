@@ -46,20 +46,14 @@ class ThemeManager(object):
         def is_empty(val):
             return val is None or len(val) == 0
 
-        b = t.brightness if is_empty(brightness)\
-            else Brightness.find(brightness)
-        p = t.primary_colour if is_empty(primary_colour)\
-            else MaterialColours.find(primary_colour)
-        s = t.secondary_colour if is_empty(secondary_colour)\
-            else MaterialColours.find(secondary_colour)
+        b = Brightness.find(brightness or '') or t.brightness
+        p = MaterialColours.find(primary_colour or '') or t.primary_colour
+        s = MaterialColours.find(secondary_colour or '') or t.secondary_colour
 
-        ERRMSG = 'Unrecognized material colour: "{}"'
-        if p is None:
-            m = ERRMSG.format(primary_colour)
-            raise ValueError(m)
-        if s is None:
-            m = ERRMSG.format(secondary_colour)
-            raise ValueError(m)
+        if b == t.brightness\
+            and p == t.primary_colour\
+                and s == t.secondary_colour:
+            return
 
         self.apply_theme(ThemeData(b, p, s))
 
