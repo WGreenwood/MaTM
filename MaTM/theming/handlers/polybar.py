@@ -1,8 +1,8 @@
 from configparser import ConfigParser
-from os import path, devnull
-from subprocess import call
+from os import path
+import shutil
 
-from MaTM.helpers import environ
+from MaTM.helpers import environ, process
 from MaTM.theming import AppThemeManager, ThemeManager
 
 
@@ -12,12 +12,11 @@ class PolybarThemeHandler(AppThemeManager):
     def __init__(self):
         super().__init__()
         self.polybar_dir = environ.xdg_cfg_dir('polybar')
-        self.is_active = path.isdir(self.polybar_dir)
+        self.is_active = shutil.which('polybar') is not None\
+            and path.isdir(self.polybar_dir)
 
     def on_startup(self, manager: ThemeManager):
-        call([
-            path.join(self.polybar_dir, 'launch.sh')
-        ], stdout=devnull, stderr=devnull)
+        process.run([path.join(self.polybar_dir, 'launch.sh')])
 
     def on_apply_theme(self, manager: ThemeManager):
         themeini_path = path.join(self.polybar_dir, 'theme2.ini')
