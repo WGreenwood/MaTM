@@ -1,6 +1,7 @@
 from enum import Enum
 from os import environ, path
-from subprocess import check_output
+
+from MaTM.helpers import process
 
 APP_NAME = 'MaTM'
 
@@ -33,4 +34,4 @@ class XdgUserDir(Enum):
 
 def xdg_dir(xdgdir: XdgUserDir) -> str:
     args = ['xdg-user-dir', xdgdir.name.upper()]
-    return check_output(args).decode('utf-8').rstrip()
+    return process.get_output(args)

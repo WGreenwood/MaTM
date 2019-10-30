@@ -17,13 +17,21 @@ class AppThemeManager(ABC):
 
     def startup(self, manager):
         if self.is_active:
-            print('On Startup: {}'.format(self.friendly_name))
-            self.on_startup(manager)
+            name = self.friendly_name
+            print('Calling Startup: {}'.format(name))
+            try:
+                self.on_startup(manager)
+            except Exception as e:
+                print('{} Calling Startup Error: {}'.format(e, name))
 
     def apply_theme(self, manager):
         if self.is_active:
-            print('Applying theme: {}'.format(self.friendly_name))
-            self.on_apply_theme(manager)
+            name = self.friendly_name
+            print('Applying theme: {}'.format(name))
+            try:
+                self.on_apply_theme(manager)
+            except Exception as e:
+                print('{} Apply Theme Error: {}'.format(e, name))
 
     @abstractmethod
     def on_startup(self, manager):

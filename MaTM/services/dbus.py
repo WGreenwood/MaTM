@@ -8,6 +8,7 @@ from dbus.service import Object as DBusObject  # noqa:F401
 import functools
 from sys import stderr
 
+dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 REV_DOMAIN = 'com.github.WGreenwood'
 
 
@@ -26,7 +27,6 @@ class DbusService(object):
     iface: dbus.service.Object
 
     def __init__(self):
-        dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
         self.session_bus = dbus.SessionBus()
 
     def as_server(self, iface_class):

@@ -140,7 +140,7 @@ class Colour(object):
         self._blue = Colour._clamp(value, 0, 255)
 
     def __repr__(self):
-        return 'Colour<{}>'.format(self.to_hex())
+        return '{{ Colour:{} }}'.format(self.to_hex())
 
 
 class Colours(object):

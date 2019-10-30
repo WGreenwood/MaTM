@@ -20,11 +20,12 @@ CONSOLE_SCRIPTS = {
 
 # Nothing should be put in this list, they should be listed in PKGBUILD.template
 INSTALL_REQUIRES = []
-# Dev can be used, it is run in a virtual environment
+# Dev/Testing can be used, it is run in a virtual environment
 DEV_REQUIRES = [
     'flake8',
     'rope',
     'autopep8',
+    'pydeps'
 ]
 TESTING_REQUIRES = [
     'pytest',

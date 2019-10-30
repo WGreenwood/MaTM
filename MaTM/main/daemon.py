@@ -1,9 +1,9 @@
 from MaTM.services.daemon import DaemonService
 from MaTM.services.dbus import (
+    DBusException,
+    DBusObject,
     iface_method,
     REV_DOMAIN,
-    DBusException,
-    DBusObject
 )
 
 

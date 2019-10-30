@@ -49,7 +49,7 @@ class MaterialColour(object):
         }
 
     def __repr__(self):
-        return f'MaterialColour<{self.name}>'
+        return f'{{ MaterialColour:{self.name} }}>'
 
 
 class MaterialColours(object):
