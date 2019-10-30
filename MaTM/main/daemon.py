@@ -45,7 +45,6 @@ class MatmInterface(DBusObject):
 
 
 def main():
-    # TODO: Configure logger.
     # Note: os.getppid == 1, running as service
     daemon = DaemonService(MatmInterface)
     daemon.main(True)

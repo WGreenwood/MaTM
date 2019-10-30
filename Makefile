@@ -44,9 +44,16 @@ build: zipped
 # Build the arch linux package
 	@cd ${ARCHPKG_WORKDIR}; PKGDEST="${ARCHPKG_DIR}" makechrootpkg -c -r ${CHROOT_DIR} -- -c -C
 
+depgraph:
+	@echo "Building dependency graph"
+	@pydeps MaTM --max-bacon=0 --noshow --reverse -o MaTM.svg\
+		--cluster --max-cluster-size=5 --min-cluster-size=2 --keep-target-cluster\
+		-xx MaTM.services MaTM.main.args MaTM.theming.handler_base\
+		-x "MaTM.helpers*" "MaTM.theming.handlers.*" "MaTM.theming.colours.*" "_*"
+
 clean:
 	@echo "Cleaning output directories"
 	@rm -r ${ARCHPKG_WORKDIR} ${TEMP_DIR} >/dev/null 2>&1 | printf ''
 
 
-.PHONY: build clean
+.PHONY: zipped build depgraph clean
