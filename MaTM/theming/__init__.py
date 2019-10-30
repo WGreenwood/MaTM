@@ -6,7 +6,11 @@ from MaTM.theming.manager import ThemeManager  # noqa:F401
 def create_default_manager() -> ThemeManager:
     tm = ThemeManager()
 
-    from MaTM.theming.handlers import PolybarThemeHandler
+    from MaTM.theming.handlers import (
+        PolybarThemeHandler,
+        SpicetifyThemeHandler
+    )
     tm.add_theme_handler(PolybarThemeHandler())
+    tm.add_theme_handler(SpicetifyThemeHandler())
 
     return tm
