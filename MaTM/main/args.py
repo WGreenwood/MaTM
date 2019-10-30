@@ -34,6 +34,7 @@ def parse_msg_args(commands, argv: typing.List[str] = None):
             subparsers, 'get',
             'Gets various properties from the daemon'
         )
+        get_parser.set_defaults(help_func=get_parser.print_help)
         get_subparsers = get_parser.add_subparsers()
 
         def add_get_parser(func, name, help):
@@ -60,14 +61,17 @@ def parse_msg_args(commands, argv: typing.List[str] = None):
             subparsers, 'set',
             'Sets properties in matm-daemon'
         )
+        set_parser.set_defaults(help_func=set_parser.print_help)
         set_subparsers = set_parser.add_subparsers()
 
         theme_set_parser = add_parser(
             set_subparsers, 'theme',
             'Sets the current theme in matm-daemon'
         )
-
-        theme_set_parser.set_defaults(func=commands.set_theme)
+        theme_set_parser.set_defaults(
+            help_func=theme_set_parser.print_help,
+            func=commands.set_theme
+        )
         theme_set_parser.add_argument(
             '-p', '--primary-colour',
             action='store',
@@ -91,4 +95,9 @@ def parse_msg_args(commands, argv: typing.List[str] = None):
         del parsed_args.func
         if func(parsed_args):
             return
-    parser.print_help()
+
+    # Function returned false, print help message
+    if hasattr(parsed_args, 'help_func'):
+        getattr(parsed_args, 'help_func')()
+    else:
+        parser.print_help()
