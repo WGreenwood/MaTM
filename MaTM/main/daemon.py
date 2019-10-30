@@ -1,11 +1,13 @@
-import dbus
-from dbus.service import Object as DbusObject
-
 from MaTM.services.daemon import DaemonService
-from MaTM.services.dbus import iface_method, REV_DOMAIN
+from MaTM.services.dbus import (
+    iface_method,
+    REV_DOMAIN,
+    DBusException,
+    DBusObject
+)
 
 
-class MaTMDaemonException(dbus.DBusException):
+class MaTMDaemonException(DBusException):
     _dbus_error_name = f"{REV_DOMAIN}.MaTMDaemonException"
     message: str
 
@@ -13,7 +15,7 @@ class MaTMDaemonException(dbus.DBusException):
         self.message = message
 
 
-class MatmInterface(DbusObject):
+class MatmInterface(DBusObject):
     daemon: DaemonService
 
     @iface_method

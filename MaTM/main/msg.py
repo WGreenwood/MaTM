@@ -1,6 +1,5 @@
-import dbus
 from MaTM.main.args import parse_msg_args
-from MaTM.services.dbus import quick_client
+from MaTM.services.dbus import DBusException, quick_client
 
 
 class MatmMsgCommands(object):
@@ -21,7 +20,7 @@ class MatmMsgCommands(object):
                 args.secondary_colour or ''
             )
             self._print_theme_response(theme)
-        except dbus.DBusException as e:
+        except DBusException as e:
             print('Error: {}'.format(e.args[0]))
 
         return True

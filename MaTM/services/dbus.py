@@ -1,6 +1,9 @@
-import dbus  # noqa:E403
-import dbus.service  # noqa:E403
-import dbus.mainloop.glib  # noqa:E403
+import dbus
+import dbus.service
+import dbus.mainloop.glib
+
+from dbus import DBusException
+from dbus.service import Object as DBusObject  # noqa:F401
 
 import functools
 from sys import stderr
@@ -8,7 +11,7 @@ from sys import stderr
 REV_DOMAIN = 'com.github.WGreenwood'
 
 
-class MatmServiceException(dbus.DBusException):
+class MatmServiceException(DBusException):
     _dbus_error_name = f"{REV_DOMAIN}.MamtServiceException"
 
 
