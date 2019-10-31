@@ -48,8 +48,8 @@ depgraph:
 	@echo "Building dependency graph"
 	@pydeps MaTM --max-bacon=0 --noshow --reverse -o MaTM.svg\
 		--cluster --max-cluster-size=5 --min-cluster-size=2 --keep-target-cluster\
-		-xx MaTM.services MaTM.main.args MaTM.theming.handler_base\
-		-x "MaTM.helpers*" "MaTM.theming.handlers.*" "MaTM.theming.colours.*" "_*"
+		-xx MaTM.services MaTM.main MaTM.main.args MaTM.theming.handler_base\
+		-x "MaTM.helpers*" "MaTM.theming.colours.*" "_*"
 
 clean:
 	@echo "Cleaning output directories"

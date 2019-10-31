@@ -18,6 +18,18 @@ class SpicetifyThemeHandler(AppThemeManager):
         self.xdotool_path = shutil.which('xdotool')
         self.i3msg_path = shutil.which('i3-msg')
 
+        if self.spicetify_path is None:
+            print('Failed to locate spicetify in path')
+            self.is_active = False
+
+        if self.xdotool_path is None:
+            print('Failed to locate xdotool in path')
+            self.is_active = False
+
+        if self.i3msg_path is None:
+            print('Failed to locate i3-msg in path')
+            self.is_active = False
+
     def on_startup(self, manager: ThemeManager):
         pass
 
@@ -34,9 +46,9 @@ class SpicetifyThemeHandler(AppThemeManager):
             self._set_active_window(spotify_window)
             self._reload_spotify_window(spotify_window)
 
-        self._set_active_window(active_window)
         for num in active_workspaces.values():
             process.run([self.i3msg_path, 'workspace', str(num)])
+        self._set_active_window(active_window)
 
     def _get_active_workspaces(self) -> typing.Dict[str, int]:
         active_workspaces = {}
