@@ -13,4 +13,6 @@ def create_default_manager() -> ThemeManager:
     tm.add_theme_handler(PolybarThemeHandler())
     tm.add_theme_handler(SpicetifyThemeHandler())
 
+    tm.load_config()
+
     return tm

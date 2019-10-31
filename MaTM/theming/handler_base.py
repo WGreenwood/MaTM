@@ -15,6 +15,10 @@ class AppThemeManager(ABC):
         super().__init__()
         self.is_active = True
 
+    def config_loaded(self, manager):
+        if self.is_active:
+            self.on_config_loaded(manager)
+
     def startup(self, manager):
         if self.is_active:
             name = self.friendly_name
@@ -32,6 +36,10 @@ class AppThemeManager(ABC):
                 self.on_apply_theme(manager)
             except Exception as e:
                 print('{} Apply Theme Error: {}'.format(e, name))
+
+    @abstractmethod
+    def on_config_loaded(self, manager):
+        pass
 
     @abstractmethod
     def on_startup(self, manager):
