@@ -1,8 +1,7 @@
 import json
-import shutil
 import typing
 
-from MaTM.helpers import process
+from MaTM.helpers import files, process
 from MaTM.theming import AppThemeManager, ThemeManager
 
 
@@ -11,24 +10,23 @@ class SpicetifyThemeHandler(AppThemeManager):
 
     def __init__(self):
         super().__init__()
-        # TODO: Allow specifying xdotool path
-        # TODO: Add optional dependencies:
-        # spicetify, xdotool, i3
-        self.spicetify_path = shutil.which('spicetify')
-        self.xdotool_path = shutil.which('xdotool')
-        self.i3msg_path = shutil.which('i3-msg')
 
-        if self.spicetify_path is None:
-            print('Failed to locate spicetify in path')
-            self.is_active = False
+    def on_config_loaded(self, manager: ThemeManager):
+        CFG_KEY = 'spotify'
+        cfg = manager.config
+        section = cfg[CFG_KEY] if CFG_KEY in cfg else {}
 
-        if self.xdotool_path is None:
-            print('Failed to locate xdotool in path')
-            self.is_active = False
+        self.spicetify_path = files.get_program_path(section, 'spicetify')
+        self.xdotool_path = files.get_program_path(section, 'xdotool')
+        self.i3msg_path = files.get_program_path(section, 'i3-msg')
 
-        if self.i3msg_path is None:
-            print('Failed to locate i3-msg in path')
-            self.is_active = False
+        self.is_active = all(map(
+            lambda p: p is not None, [
+                self.spicetify_path,
+                self.xdotool_path,
+                self.i3msg_path
+            ]
+        ))
 
     def on_startup(self, manager: ThemeManager):
         pass
@@ -53,7 +51,7 @@ class SpicetifyThemeHandler(AppThemeManager):
     def _get_active_workspaces(self) -> typing.Dict[str, int]:
         active_workspaces = {}
         json_str = process.get_output([
-            'i3-msg', '-t', 'get_workspaces'
+            self.i3msg_path, '-t', 'get_workspaces'
         ])
         workspaces = json.loads(json_str)
         for workspace in workspaces:
@@ -66,7 +64,7 @@ class SpicetifyThemeHandler(AppThemeManager):
         return active_workspaces
 
     def _get_active_window(self) -> int:
-        return int(process.get_output(['xdotool', 'getactivewindow']))
+        return int(process.get_output([self.xdotool_path, 'getactivewindow']))
 
     def _get_spotify_windows(self) -> typing.List[int]:
         return process.get_list_output([
