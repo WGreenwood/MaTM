@@ -44,7 +44,8 @@ class Colour(object):
     def get_text_colour(self):
         return self.get_brightness().get_negative_colour()
 
-    def get_brightness(self) -> Brightness:
+    def get_relative_luminance(self):
+        # https://www.w3.org/TR/WCAG20/#relativeluminancedef
         def parse_colour(c):
             c = c/255
             if c <= 0.03928:
@@ -54,8 +55,11 @@ class Colour(object):
             parse_colour,
             [self.red, self.green, self.blue]
         )
-        L = (0.2126 * r) + (0.7152 * g) + (0.0722 * b)
-        return Brightness.Dark if L > 0.179 else Brightness.Light
+        return (0.2126 * r) + (0.7152 * g) + (0.0722 * b)
+
+    def get_brightness(self) -> Brightness:
+        L = self.get_relative_luminance()
+        return Brightness.Light if L > 0.179 else Brightness.Dark
 
     def to_hex(self) -> str:
         hex_fmt = '{:02x}'
