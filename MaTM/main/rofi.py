@@ -1,5 +1,5 @@
-from MaTM.helpers.rofi import Rofi
-from MaTM.helpers.rofi import strip_html
+from MaTM.helpers import files
+from MaTM.helpers.rofi import Rofi, strip_html
 from MaTM.theming.colours import Brightness, MaterialColours
 from MaTM.services.dbus import quick_client
 
@@ -36,7 +36,24 @@ def main():
     import sys
     argcount = len(sys.argv)
     if argcount <= 1:
-        exit(1)
+        import subprocess
+        rofi_path = files.get_program_path({}, 'rofi')
+        if rofi_path is None:
+            print('Failed to locate rofi in the path')
+            exit(1)
+        modi_arg = ','.join(map(
+            lambda m: f"{m}:matm-rofi-mode {m}", [
+                'primary',
+                'secondary',
+                'brightness'
+            ]
+        ))
+        subprocess.run([
+            rofi_path,
+            '-modi', modi_arg,
+            '-show', 'primary'
+        ])
+        return
     state = RofiState.from_arg(sys.argv[1])
 
     selected = sys.argv[2] if argcount > 2 else ''
@@ -50,12 +67,6 @@ def main():
         for option in options:
             rofi.add_option(option, option, None)
 
-    kwargs = {
-        'brightness': '',
-        'primary_colour': '',
-        'secondary_colour': ''
-    }
-
     for rstate in RofiState:
         if rstate != state:
             continue
@@ -65,16 +76,10 @@ def main():
             if rstate == RofiState.Brightness\
             else COLOUR_OPTIONS
         add_options(options)
+        rofi_selected_key = identifier
         if len(selected) > 0:
-            rofi_selected_key = identifier
-
+            kwargs = {s.value[3]: '' for s in RofiState}
             kwargs[themekey] = strip_html(selected)
-
-            # TODO: This doesn't work properly, work through the logic again
-            print('selected: {}'.format(selected), file=sys.stderr)
-            print('rstate: {}'.format(rstate), file=sys.stderr)
-            print('values: {}'.format(rstate.value), file=sys.stderr)
-            print('kwargs: {}'.format(kwargs), file=sys.stderr)
             quick_client().SetTheme(
                 kwargs['brightness'],
                 kwargs['primary_colour'],
