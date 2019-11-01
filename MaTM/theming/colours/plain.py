@@ -41,7 +41,10 @@ class Colour(object):
         self._green = green
         self._blue = blue
 
-    def get_brightness(self):
+    def get_text_colour(self):
+        return self.get_brightness().get_negative_colour()
+
+    def get_brightness(self) -> Brightness:
         def parse_colour(c):
             c = c/255
             if c <= 0.03928:
@@ -54,7 +57,7 @@ class Colour(object):
         L = (0.2126 * r) + (0.7152 * g) + (0.0722 * b)
         return Brightness.Dark if L > 0.179 else Brightness.Light
 
-    def to_hex(self):
+    def to_hex(self) -> str:
         hex_fmt = '{:02x}'
 
         alpha_hex = ''
@@ -108,38 +111,38 @@ class Colour(object):
         return max(smallest, min(largest, value))
 
     @property
-    def alpha(self):
+    def alpha(self) -> int:
         return self._alpha
 
     @property
-    def red(self):
+    def red(self) -> int:
         return self._red
 
     @property
-    def green(self):
+    def green(self) -> int:
         return self._green
 
     @property
-    def blue(self):
+    def blue(self) -> int:
         return self._blue
 
     @alpha.setter
-    def set_alpha(self, value):
+    def set_alpha(self, value: int):
         self._alpha = Colour._clamp(value, 0, 255)
 
     @red.setter
-    def set_red(self, value):
+    def set_red(self, value: int):
         self._red = Colour._clamp(value, 0, 255)
 
     @green.setter
-    def set_green(self, value):
+    def set_green(self, value: int):
         self._green = Colour._clamp(value, 0, 255)
 
     @blue.setter
-    def set_blue(self, value):
+    def set_blue(self, value: int):
         self._blue = Colour._clamp(value, 0, 255)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '{{ Colour:{} }}'.format(self.to_hex())
 
 
