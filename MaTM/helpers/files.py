@@ -15,7 +15,7 @@ def write_lines(filename: str, lines: typing.Iterable[str]):
             print(line, file=f)
 
 
-def get_path(section, program: str) -> str:
+def get_program_path(section, program: str) -> str:
     program_path = section[program] if program in section\
         else shutil.which(program)
     if program_path is not None and\
