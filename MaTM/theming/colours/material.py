@@ -28,10 +28,9 @@ class MaterialColour(object):
         self.shade7 = Colour.from_hex(shade7)
         self.shade8 = Colour.from_hex(shade8)
 
-    def get_shade(self, brightness: Brightness):
-        if brightness == Brightness.Light:
-            return self.shade8
-        return self.shade1
+    def get_accent(self, brightness: Brightness) -> Colour:
+        return self.shade6 if brightness == Brightness.Light\
+            else self.shade3
 
     def to_dict(self, prefix=''):
         brightness: Brightness = self.shade4.get_brightness()
