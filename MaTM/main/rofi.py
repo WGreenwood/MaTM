@@ -12,12 +12,10 @@ class RofiState(Enum):
         'brightness', 'brightness')
     PrimaryColour = (
         2, 'Choose a primary colour',
-        'primary', 'primary_colour'
-    )
+        'primary', 'primary_colour')
     SecondaryColour = (
         3, 'Choose a secondary colour',
-        'secondary', 'secondary_colour'
-    )
+        'secondary', 'secondary_colour')
 
     def matches_state(self, other) -> bool:
         return other == self.value[1]
@@ -52,6 +50,12 @@ def main():
         for option in options:
             rofi.add_option(option, option, None)
 
+    kwargs = {
+        'brightness': '',
+        'primary_colour': '',
+        'secondary_colour': ''
+    }
+
     for rstate in RofiState:
         if rstate != state:
             continue
@@ -61,18 +65,21 @@ def main():
             if rstate == RofiState.Brightness\
             else COLOUR_OPTIONS
         add_options(options)
+        if len(selected) > 0:
+            rofi_selected_key = identifier
 
-        rofi_selected_key = identifier
+            kwargs[themekey] = strip_html(selected)
 
-        kwargs = {s.value[3]: '' for s in RofiState}
-        kwargs[themekey] = strip_html(selected)
-
-        # TODO: This doesn't work properly, work through the logic again
-        print('selected: {}'.format(selected), file=sys.stderr)
-        print('rstate: {}'.format(rstate), file=sys.stderr)
-        print('values: {}'.format(rstate.value), file=sys.stderr)
-        print('kwargs: {}'.format(kwargs), file=sys.stderr)
-        quick_client().SetTheme(**kwargs)
+            # TODO: This doesn't work properly, work through the logic again
+            print('selected: {}'.format(selected), file=sys.stderr)
+            print('rstate: {}'.format(rstate), file=sys.stderr)
+            print('values: {}'.format(rstate.value), file=sys.stderr)
+            print('kwargs: {}'.format(kwargs), file=sys.stderr)
+            quick_client().SetTheme(
+                kwargs['brightness'],
+                kwargs['primary_colour'],
+                kwargs['secondary_colour']
+            )
         break
 
     current = client.GetTheme()
