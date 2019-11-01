@@ -6,6 +6,12 @@ class Brightness(Enum):
     Light = 0
     Dark = 1
 
+    def is_light(self) -> bool:
+        return self == Brightness.Light
+
+    def is_dark(self) -> bool:
+        return self == Brightness.Dark
+
     def find(name: str):
         for b in Brightness:
             if b.name.lower() == name.lower():
@@ -13,17 +19,17 @@ class Brightness(Enum):
         return None
 
     def get_colour(self):
-        if self == Brightness.Light:
+        if self.is_light():
             return Colours.light()
-        elif self == Brightness.Dark:
+        elif self.is_dark():
             return Colours.dark()
         else:
             raise ValueError('Unknown brightness value')
 
     def get_negative_colour(self):
-        if self == Brightness.Light:
+        if self.is_light():
             return Colours.dark()
-        elif self == Brightness.Dark:
+        elif self.is_dark():
             return Colours.light()
         else:
             raise ValueError('Unknown brightness value')
@@ -58,8 +64,11 @@ class Colour(object):
         return (0.2126 * r) + (0.7152 * g) + (0.0722 * b)
 
     def get_brightness(self) -> Brightness:
+        LIGHT_CONST = 0.179
         L = self.get_relative_luminance()
-        return Brightness.Light if L > 0.179 else Brightness.Dark
+        return Brightness.Light\
+            if L > LIGHT_CONST\
+            else Brightness.Dark
 
     def to_hex(self) -> str:
         hex_fmt = '{:02x}'

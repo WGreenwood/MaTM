@@ -19,13 +19,13 @@ class ThemeData(object):
     @property
     def foreground(self) -> Colour:
         return Colours.light()\
-            if self.brightness == Brightness.Dark\
+            if self.brightness.is_dark()\
             else Colours.dark()
 
     @property
     def background(self) -> Colour:
         return Colours.dark()\
-            if self.brightness == Brightness.Dark\
+            if self.brightness.is_dark()\
             else Colours.light()
 
     def __init__(self,
