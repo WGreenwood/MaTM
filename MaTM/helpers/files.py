@@ -19,7 +19,7 @@ def get_program_path(section, program: str) -> str:
     program_path = section[program] if program in section\
         else shutil.which(program)
     if program_path is not None and\
-            len(program_path) > 0 or\
+            len(program_path) > 0 and\
             path.isfile(program_path):
         return program_path
     return None
