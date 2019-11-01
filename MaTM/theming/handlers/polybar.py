@@ -31,18 +31,16 @@ class PolybarThemeHandler(AppThemeManager):
         themeini_path = path.join(self.polybar_dir, 'theme2.ini')
         theme = manager.current_theme
 
-        pshade4 = theme.primary_colour.get_accent(theme.brightness)
-        pshade4text = pshade4.get_text_colour()
-        sshade4 = theme.secondary_colour.get_accent(theme.brightness)
-        # sshade4text = sshade4.get_text_colour()
+        p = theme.primary_colour
+        s = theme.secondary_colour
 
         inidata = {
             'background': theme.background.to_hex(),
             'foreground': theme.foreground.to_hex(),
-            'icons': sshade4.to_hex(),
-            'overline': pshade4.to_hex(),
-            'workspace-indicator': pshade4.to_hex(),
-            'workspace-indicator-text': pshade4text.to_hex(),
+            'icons': s[700].to_hex(),
+            'overline': p[700].to_hex(),
+            'workspace-indicator': p[500].to_hex(),
+            'workspace-indicator-text': p[500].get_text_colour().to_hex(),
         }
 
         cfg = ConfigParser()
