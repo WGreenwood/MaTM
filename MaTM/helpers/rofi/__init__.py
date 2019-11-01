@@ -1,4 +1,4 @@
-from MaTM.environ import APP_NAME
+from MaTM.helpers.environ import APP_NAME
 from MaTM.helpers.rofi.entry import RofiEntry
 from MaTM.helpers.rofi.html_stripper import strip_html
 
