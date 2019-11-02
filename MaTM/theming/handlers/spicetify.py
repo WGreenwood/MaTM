@@ -34,7 +34,7 @@ class SpicetifyThemeHandler(AppThemeManager):
 
     def on_apply_theme(self, manager: ThemeManager):
         # TODO: Actually write the template file
-        process.run([self.spicetify_path, 'update'])
+        process.call([self.spicetify_path, 'update'])
         self._safe_reload_spotify_windows()
 
     def _safe_reload_spotify_windows(self):
@@ -49,7 +49,7 @@ class SpicetifyThemeHandler(AppThemeManager):
             self._reload_spotify_window(window)
 
         for num in active_workspaces.values():
-            process.run([self.i3msg_path, 'workspace', str(num)])
+            process.call([self.i3msg_path, 'workspace', str(num)])
         self._set_active_window(active_window)
 
     def _get_active_workspaces(self) -> typing.Dict[str, int]:
@@ -80,10 +80,10 @@ class SpicetifyThemeHandler(AppThemeManager):
             return []
 
     def _set_active_window(self, window):
-        process.run([self.xdotool_path, 'windowactivate', str(window)])
+        process.call([self.xdotool_path, 'windowactivate', str(window)])
 
     def _reload_spotify_window(self, window):
-        process.run([
+        process.call([
             self.xdotool_path,
             'key', '-window', window,
             'ctrl+shift+r'

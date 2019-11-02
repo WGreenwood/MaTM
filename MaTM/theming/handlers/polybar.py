@@ -25,7 +25,7 @@ class PolybarThemeHandler(AppThemeManager):
             and path.isfile(self.launch_script)
 
     def on_startup(self, manager: ThemeManager):
-        process.run([self.launch_script])
+        process.call([self.launch_script])
 
     def on_apply_theme(self, manager: ThemeManager):
         themeini_path = path.join(self.polybar_dir, 'theme2.ini')

@@ -14,7 +14,7 @@ with open('VERSION', 'rt') as f:
 PLATFORMS = ['posix']
 CONSOLE_SCRIPTS = {
     'matm-msg': 'MaTM.main:msg',
-    'matm-rofi-mode': 'MaTM.main:rofi_mode',
+    'matm-prompt': 'MaTM.main:rofi_mode',
     'matm-daemon': 'MaTM.main:daemon'
 }
 
