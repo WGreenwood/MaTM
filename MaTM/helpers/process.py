@@ -15,13 +15,14 @@ def get_list_output(args: typing.List[str]) -> typing.List[str]:
     ))
 
 
-def run(args: typing.List[str], stdin: str) -> str:
+def run(args: typing.List[str], stdin: str = '') -> str:
     kwargs = {
         'stdout': subprocess.PIPE,
         'stderr': subprocess.PIPE,
         'universal_newlines': True,
-        'input': stdin
     }
+    if len(stdin) > 0:
+        kwargs['input'] = stdin
     return subprocess.run(args, **kwargs).stdout.rstrip()
 
 
@@ -31,7 +32,7 @@ def call(args: typing.List[str], hide_output=True) -> int:
         dnull = open(os.devnull, 'wt')
         kwargs['stdout'] = dnull
         kwargs['stderr'] = dnull
-    subprocess.call(
+    return subprocess.call(
         args,
         **kwargs
     )
