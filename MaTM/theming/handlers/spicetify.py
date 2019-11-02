@@ -1,3 +1,4 @@
+from subprocess import CalledProcessError
 import json
 import typing
 
@@ -37,12 +38,15 @@ class SpicetifyThemeHandler(AppThemeManager):
         self._safe_reload_spotify_windows()
 
     def _safe_reload_spotify_windows(self):
+        spotify_windows = self._get_spotify_windows()
+        if len(spotify_windows) == 0:
+            return
         active_window = self._get_active_window()
         active_workspaces = self._get_active_workspaces()
 
-        for spotify_window in self._get_spotify_windows():
-            self._set_active_window(spotify_window)
-            self._reload_spotify_window(spotify_window)
+        for window in spotify_windows:
+            self._set_active_window(window)
+            self._reload_spotify_window(window)
 
         for num in active_workspaces.values():
             process.run([self.i3msg_path, 'workspace', str(num)])
@@ -67,10 +71,13 @@ class SpicetifyThemeHandler(AppThemeManager):
         return int(process.get_output([self.xdotool_path, 'getactivewindow']))
 
     def _get_spotify_windows(self) -> typing.List[int]:
-        return process.get_list_output([
-            self.xdotool_path, 'search',
-            '--class', 'spotify'
-        ])
+        try:
+            return process.get_list_output([
+                self.xdotool_path, 'search',
+                '--class', 'spotify'
+            ])
+        except CalledProcessError:
+            return []
 
     def _set_active_window(self, window):
         process.run([self.xdotool_path, 'windowactivate', str(window)])

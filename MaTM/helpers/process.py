@@ -8,11 +8,11 @@ def get_output(args: typing.List[str]):
         .decode('utf-8').rstrip()
 
 
-def get_list_output(args: typing.List[str]) -> typing.Iterator[str]:
-    return filter(
+def get_list_output(args: typing.List[str]) -> typing.List[str]:
+    return list(filter(
         None,
         get_output(args).split('\n')
-    )
+    ))
 
 
 def run(args: typing.List[str], hide_output=True) -> int:
