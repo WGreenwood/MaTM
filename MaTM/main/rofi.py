@@ -6,22 +6,15 @@ from MaTM.services.dbus import quick_client
 from enum import Enum
 
 
-class MainMenuChoice(Enum):
-    All = 'Change All'
-    Brightness = 'Change Brightness'
-    PrimaryAccent = 'Change Primary Accent Colour'
-    SecondaryAccent = 'Change Secondary Accent Colour'
-
-
 def get_main_menu() -> RofiMenu:
     menu = RofiMenu(environ.APP_NAME, 'What would you like to change?')
     for choice in MainMenuChoice:
-        menu.add_option(choice.value, choice)
+        menu.add_option(choice.value[0], choice)
     return menu
 
 
 def get_brightness_menu() -> RofiMenu:
-    menu = RofiMenu(environ.APP_NAME, 'Select a new brightness')
+    menu = RofiMenu(environ.APP_NAME)
     for b in Brightness:
         menu.add_option(b.name, b)
     return menu
@@ -34,6 +27,33 @@ def get_colour_menu() -> RofiMenu:
     return menu
 
 
+class MainMenuChoice(Enum):
+    All = ('Everything',)
+    Brightness = (
+        'Brightness',
+        'Select a new brightness',
+        'brightness',
+        get_brightness_menu,
+    )
+    PrimaryAccent = (
+        'Primary accent colour',
+        'Select a new primary colour',
+        'primary-colour',
+        get_colour_menu,
+    )
+    SecondaryAccent = (
+        'Secondary accent colour',
+        'Select a new secondary ary colour',
+        'secondary-colour',
+        get_colour_menu,
+    )
+    @staticmethod
+    def get_choices():
+        yield MainMenuChoice.Brightness
+        yield MainMenuChoice.PrimaryAccent
+        yield MainMenuChoice.SecondaryAccent
+
+
 def main():
     client = quick_client()
     current_theme = client.GetTheme()
@@ -43,56 +63,35 @@ def main():
         main_menu.show('')
         if main_menu.selected_option is None:
             return
-        choice: MainMenuChoice = main_menu.selected_option.tag
-        is_all = choice == MainMenuChoice.All
+        user_choice: MainMenuChoice = main_menu.selected_option.tag
+        is_all = user_choice == MainMenuChoice.All
 
-        brightness_choice = ''
-        primary_choice = ''
-        secondary_choice = ''
+        theme_choices = {}
 
         brightness_menu = get_brightness_menu()
         colour_menu = get_colour_menu()
 
-        def show_menu(menu: RofiMenu, special_item: str, msg: str = '') -> str:
-            if len(msg) > 0:
+        for choice in MainMenuChoice.get_choices():
+            _, msg, key, func = choice.value
+            if is_all or user_choice == choice:
+                menu = brightness_menu\
+                    if func == get_brightness_menu\
+                    else colour_menu
                 menu.message = msg
-            menu.show(special_item)
-            if menu.selected_option is None:
-                return None
-            return menu.selected_option.text
+                special_item = current_theme[key]
+                menu.show(special_item)
+                if menu.selected_option is None:
+                    return
+                theme_choices[key] = menu.selected_option.text
+            else:
+                theme_choices[key] = ''
 
-        if is_all or choice == MainMenuChoice.Brightness:
-            brightness_choice = show_menu(
-                brightness_menu,
-                current_theme['brightness']
+        if any(map(lambda s: len(s) > 0, theme_choices.values())):
+            current_theme = client.SetTheme(
+                theme_choices['brightness'],
+                theme_choices['primary-colour'],
+                theme_choices['secondary-colour'],
             )
-            if brightness_choice is None:
-                return
 
-        if is_all or choice == MainMenuChoice.PrimaryAccent:
-            primary_choice = show_menu(
-                colour_menu,
-                current_theme['primary-colour'],
-                'Select a new primary accent colour'
-            )
-            if primary_choice is None:
-                return
-
-        if is_all or choice == MainMenuChoice.SecondaryAccent:
-            secondary_choice = show_menu(
-                colour_menu,
-                current_theme['secondary-colour'],
-                'Select a new secondary accent colour'
-            )
-            if secondary_choice is None:
-                return
-
-        choices = [brightness_choice, primary_choice, secondary_choice]
-        if any(map(lambda s: len(s) > 0, choices)):
-            client.SetTheme(
-                brightness_choice,
-                primary_choice,
-                secondary_choice
-            )
         if choice == MainMenuChoice.All:
             return

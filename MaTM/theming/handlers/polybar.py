@@ -34,13 +34,18 @@ class PolybarThemeHandler(AppThemeManager):
         p = theme.primary_colour
         s = theme.secondary_colour
 
+        basenum = 500 if theme.brightness.is_dark()\
+            else 300
+
+        workspace_indicator = p[basenum+200]
+        workspace_indicator_text = workspace_indicator.get_text_colour()
         inidata = {
             'background': theme.background.to_hex(),
             'foreground': theme.foreground.to_hex(),
-            'icons': s[700].to_hex(),
-            'overline': p[700].to_hex(),
-            'workspace-indicator': p[500].to_hex(),
-            'workspace-indicator-text': p[500].get_text_colour().to_hex(),
+            'icons': s[basenum].to_hex(),
+            'overline': p[basenum].to_hex(),
+            'workspace-indicator': workspace_indicator.to_hex(),
+            'workspace-indicator-text': workspace_indicator_text.to_hex(),
         }
 
         cfg = ConfigParser()
