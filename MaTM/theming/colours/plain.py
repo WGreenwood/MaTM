@@ -12,6 +12,9 @@ class Brightness(Enum):
     def is_dark(self) -> bool:
         return self == Brightness.Dark
 
+    def to_primary_idx(self):
+        return 300 if self.is_light() else 500
+
     def find(name: str):
         for b in Brightness:
             if b.name.lower() == name.lower():
