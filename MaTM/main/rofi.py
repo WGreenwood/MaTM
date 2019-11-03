@@ -43,7 +43,7 @@ class MainMenuChoice(Enum):
     )
     SecondaryAccent = (
         'Secondary accent colour',
-        'Select a new secondary ary colour',
+        'Select a new secondary colour',
         'secondary-colour',
         get_colour_menu,
     )
