@@ -8,12 +8,15 @@ from MaTM.theming import AppThemeManager, ThemeManager
 
 class SpicetifyThemeHandler(AppThemeManager):
     __appname__ = 'spotify'
+    spicetify_path: str
+    xdotool_path: str
+    i3msg_path: str
 
     def __init__(self):
         super().__init__()
 
     def on_config_loaded(self, manager: ThemeManager):
-        CFG_KEY = 'spotify'
+        CFG_KEY = SpicetifyThemeHandler.__appname__
         cfg = manager.config
         section = cfg[CFG_KEY] if CFG_KEY in cfg else {}
 
