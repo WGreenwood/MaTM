@@ -15,7 +15,8 @@ def get_list_output(args: typing.List[str]) -> typing.List[str]:
     ))
 
 
-def run(args: typing.List[str], stdin: str = '') -> str:
+def run(args: typing.List[str], stdin: str = '')\
+        -> subprocess.CompletedProcess:
     kwargs = {
         'stdout': subprocess.PIPE,
         'stderr': subprocess.PIPE,
@@ -23,7 +24,7 @@ def run(args: typing.List[str], stdin: str = '') -> str:
     }
     if len(stdin) > 0:
         kwargs['input'] = stdin
-    return subprocess.run(args, **kwargs).stdout.rstrip()
+    return subprocess.run(args, **kwargs)
 
 
 def call(args: typing.List[str], hide_output=True) -> int:

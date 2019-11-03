@@ -81,4 +81,4 @@ class RofiMenu(object):
             ),
             self.options
         ))
-        return process.run(args, option_text)
+        return process.run(args, option_text).stdout.rstrip()
