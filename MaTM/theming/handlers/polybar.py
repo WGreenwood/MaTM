@@ -35,6 +35,7 @@ class PolybarThemeHandler(AppThemeManager):
         primary = theme.primary_colour
         secondary = theme.secondary_colour
 
+        matm_icons = primary[colourbase]
         icons = secondary[colourbase]
         overline = primary[colourbase+200]
         workspaces = primary[colourbase]
@@ -43,6 +44,7 @@ class PolybarThemeHandler(AppThemeManager):
         inidata = {
             'background': theme.background,
             'foreground': theme.foreground,
+            'matm-icons': matm_icons,
             'icons': icons,
             'overline': overline,
             'workspace-indicator': workspaces,
