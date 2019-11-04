@@ -44,7 +44,7 @@ class PolybarThemeHandler(AppThemeManager):
         inidata = {
             'background': theme.background,
             'foreground': theme.foreground,
-            'matm-icons': matm_icons,
+            'matm-icon': matm_icons,
             'icons': icons,
             'overline': overline,
             'workspace-indicator': workspaces,
