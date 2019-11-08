@@ -13,7 +13,7 @@ from __future__ import division
 import math
 
 
-def _scale_coordinates(generator, image_width, image_height, side_length=75):
+def _scale_coordinates(generator, image_width, image_height, side_length=50):
     scaled_width = int(image_width / side_length) + 1
     scaled_height = int(image_height / side_length) + 1
 

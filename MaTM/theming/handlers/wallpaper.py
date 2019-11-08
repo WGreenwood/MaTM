@@ -22,7 +22,7 @@ class WallpaperThemeHandler(AppThemeManager):
         width, height = self.get_resolution()
         img = Image.new(mode='RGB', size=(width, height))
 
-        polygons = TilingType.get_random().call_generator(width, height)
+        polygons = TilingType.Hexagon.call_generator(width, height)
         colours = self.get_wallpaper_colours(manager)
 
         for polygon, colour in zip(polygons, colours):
