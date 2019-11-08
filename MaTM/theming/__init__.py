@@ -9,11 +9,13 @@ def create_default_manager() -> ThemeManager:
     from MaTM.theming.handlers import (
         PolybarThemeHandler,
         RofiThemeHandler,
-        SpicetifyThemeHandler
+        SpicetifyThemeHandler,
+        UrxvtThemeHandler,
     )
     tm.add_theme_handler(PolybarThemeHandler())
     tm.add_theme_handler(RofiThemeHandler())
     tm.add_theme_handler(SpicetifyThemeHandler())
+    tm.add_theme_handler(UrxvtThemeHandler())
 
     tm.load_config()
 
