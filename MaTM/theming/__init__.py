@@ -11,11 +11,13 @@ def create_default_manager() -> ThemeManager:
         RofiThemeHandler,
         SpicetifyThemeHandler,
         UrxvtThemeHandler,
+        WallpaperThemeHandler
     )
     tm.add_theme_handler(PolybarThemeHandler())
     tm.add_theme_handler(RofiThemeHandler())
     tm.add_theme_handler(SpicetifyThemeHandler())
     tm.add_theme_handler(UrxvtThemeHandler())
+    tm.add_theme_handler(WallpaperThemeHandler())
 
     tm.load_config()
 
