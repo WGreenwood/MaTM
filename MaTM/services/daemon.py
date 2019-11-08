@@ -18,6 +18,7 @@ class DaemonService(object):
 
     def main(self, suppress_kb_interrupt=True):
         print('Starting daemon')
+        self.theme_manager.on_startup()
         import contextlib
         with contextlib.suppress(KeyboardInterrupt) if suppress_kb_interrupt\
                 else contextlib.nullcontext():
