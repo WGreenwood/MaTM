@@ -35,7 +35,7 @@ class UrxvtThemeHandler(AppThemeManager):
     def on_apply_theme(self, manager: ThemeManager):
         theme = manager.current_theme
 
-        colourbase = theme.brightness.to_primary_idx()
+        colourbase = theme.brightness.to_accent_idx()
         primary = theme.primary_colour
         # secondary = theme.secondary_colour
 

@@ -36,7 +36,7 @@ class RofiThemeHandler(AppThemeManager):
         template = files.read_lines(self.template_path)
         theme = manager.current_theme
 
-        colourbase = theme.brightness.to_primary_idx()
+        colourbase = theme.brightness.to_accent_idx()
         primary = theme.primary_colour
         secondary = theme.secondary_colour
 

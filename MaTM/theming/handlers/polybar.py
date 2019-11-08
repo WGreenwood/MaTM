@@ -31,7 +31,7 @@ class PolybarThemeHandler(AppThemeManager):
         themeini_path = path.join(self.polybar_dir, 'theme2.ini')
         theme = manager.current_theme
 
-        colourbase = theme.brightness.to_primary_idx()
+        colourbase = theme.brightness.to_accent_idx()
         primary = theme.primary_colour
         secondary = theme.secondary_colour
 
