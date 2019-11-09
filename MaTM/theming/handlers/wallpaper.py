@@ -19,10 +19,18 @@ class WallpaperThemeHandler(AppThemeManager):
     def on_startup(self, manager: ThemeManager):
         output_file = path.join(environ.APP_CONFIG_DIR, 'wallpaper.png')
 
+        self.create_wallpaper(manager, TilingType.Hexagon, output_file)
+
+    def on_apply_theme(self, manager: ThemeManager):
+        self.on_startup(manager)
+
+    def create_wallpaper(self, manager: ThemeManager,
+                         tilingType: TilingType,
+                         output_file: str):
         width, height = self.get_resolution()
         img = Image.new(mode='RGB', size=(width, height))
 
-        polygons = TilingType.Hexagon.call_generator(width, height)
+        polygons = tilingType.call_generator(width, height)
         colours = self.get_wallpaper_colours(manager)
 
         for polygon, colour in zip(polygons, colours):
@@ -35,9 +43,6 @@ class WallpaperThemeHandler(AppThemeManager):
             output_file,
             '--no-fehbg'
         ])
-
-    def on_apply_theme(self, manager: ThemeManager):
-        self.on_startup(manager)
 
     def get_wallpaper_colours(self, manager: ThemeManager):
         theme = manager.current_theme
