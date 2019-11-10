@@ -3,7 +3,7 @@ from os import path
 from PIL import Image, ImageDraw
 
 from MaTM.theming import AppThemeManager, ThemeManager
-from MaTM.helpers import environ, process
+from MaTM.helpers import process
 from MaTM.helpers.wallpapers import random_colours, TilingType
 
 
@@ -17,7 +17,7 @@ class WallpaperThemeHandler(AppThemeManager):
         pass
 
     def on_startup(self, manager: ThemeManager):
-        output_file = path.join(environ.APP_CONFIG_DIR, 'wallpaper.png')
+        output_file = path.join('/tmp', 'matm_wallpaper.png')
 
         self.create_wallpaper(manager, TilingType.Hexagon, output_file)
 
