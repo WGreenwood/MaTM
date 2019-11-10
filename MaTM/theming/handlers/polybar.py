@@ -20,7 +20,7 @@ class PolybarThemeHandler(AppThemeManager):
 
     def on_config_loaded(self, manager: ThemeManager):
         self.polybar_dir = self._get_polybar_dir(manager.config)
-        self.launch_script = path.join(self.polybar_dir, 'launch2.sh')
+        self.launch_script = path.join(self.polybar_dir, 'launch.sh')
         self.is_active = path.isdir(self.polybar_dir)\
             and path.isfile(self.launch_script)
 
@@ -28,7 +28,7 @@ class PolybarThemeHandler(AppThemeManager):
         process.call([self.launch_script])
 
     def on_apply_theme(self, manager: ThemeManager):
-        themeini_path = path.join(self.polybar_dir, 'theme2.ini')
+        themeini_path = path.join(self.polybar_dir, 'theme.ini')
         theme = manager.current_theme
 
         colourbase = theme.brightness.to_accent_idx()
