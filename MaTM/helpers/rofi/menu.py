@@ -14,6 +14,7 @@ class RofiMenu(object):
 
     title: str
     message: str
+    location: int
     sort: bool
     levenshtein_sort: bool
     options: typing.List[RofiMenuItem]
@@ -23,9 +24,11 @@ class RofiMenu(object):
     def __init__(self,
                  title: str,
                  message: str = '',
+                 location: int = 2,
                  special_attribs: typing.Dict[str, str] = None):
         self.title = title
         self.message = message
+        self.location = location
         self.sort = True
         self.levenshtein_sort = False
         self.options = []
@@ -61,7 +64,10 @@ class RofiMenu(object):
         special_item = special_item or ''
 
         args = [
-            'rofi', '-dmenu',
+            'rofi',
+            '-location', str(self.location),
+            '-yoffset', '40',
+            '-dmenu',
             '-markup-rows', '-i',
 
             '-sort' if self.sort else '-no-sort',
