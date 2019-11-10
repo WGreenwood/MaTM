@@ -38,8 +38,11 @@ class PolybarThemeHandler(AppThemeManager):
         matm_icons = primary[colourbase]
         icons = secondary[colourbase]
         overline = primary[colourbase+200]
+
         workspaces = primary[colourbase]
         workspaces_text = workspaces.get_text_colour()
+
+        tray = primary[colourbase+200]
 
         inidata = {
             'background': theme.background,
@@ -49,6 +52,7 @@ class PolybarThemeHandler(AppThemeManager):
             'overline': overline,
             'workspace-indicator': workspaces,
             'workspace-indicator-text': workspaces_text,
+            'tray_bg': tray
         }
 
         cfg = ConfigParser()
