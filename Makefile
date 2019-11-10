@@ -44,6 +44,11 @@ build: zipped
 # Build the arch linux package
 	@cd ${ARCHPKG_WORKDIR}; PKGDEST="${ARCHPKG_DIR}" makechrootpkg -c -r ${CHROOT_DIR} -- -c -C
 
+install: build
+	sudo pacman -U "${ARCHPKG_DIR}/MaTM-${VERSION}-1-any.pkg.tar.xz"
+	systemctl --user daemon-reload
+	systemctl restart --user matm-daemon
+
 depgraph:
 	@echo "Building dependency graph"
 	@pydeps MaTM --max-bacon=0 --noshow --reverse -o MaTM.svg\
@@ -53,7 +58,6 @@ depgraph:
 
 clean:
 	@echo "Cleaning output directories"
-	@rm -r ${ARCHPKG_WORKDIR} ${TEMP_DIR} >/dev/null 2>&1 | printf ''
+	@rm -r ${ARCHPKG_WORKDIR} ${TEMP_DIR} >/dev/null 2>&1 | true
 
-
-.PHONY: zipped build depgraph clean
+.PHONY: zipped build install depgraph clean
