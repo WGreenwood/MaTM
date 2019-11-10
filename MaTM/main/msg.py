@@ -1,5 +1,6 @@
 from MaTM.main.args import parse_msg_args
-from MaTM.services.dbus import DBusException, quick_client
+from MaTM.services.dbus import quick_client
+from MaTM.services.gtk_loop import GtkLoop
 
 
 class MatmMsgCommands(object):
@@ -13,21 +14,42 @@ class MatmMsgCommands(object):
                 and args.secondary_colour is None:
             print('A brightness, primary, or secondary colour is required\n')
             return False
-        try:
-            theme = quick_client().SetTheme(
-                args.brightness or '',
-                args.primary_colour or '',
-                args.secondary_colour or ''
-            )
-            self._print_theme_response(theme)
-        except DBusException as e:
-            print('Error: {}'.format(e.args[0]))
 
+        loop = GtkLoop()
+
+        def handle_reply(theme):
+            self._print_theme_response(theme)
+            loop.end()
+
+        def handle_error(e):
+            print('Error: {}'.format(e.args[0]))
+            loop.end()
+
+        quick_client().SetTheme(
+            args.brightness or '',
+            args.primary_colour or '',
+            args.secondary_colour or '',
+            reply_handler=handle_reply,
+            error_handler=handle_error
+        )
+        loop.start()
         return True
 
     def get_theme(self, args):
-        theme = quick_client().GetTheme()
-        self._print_theme_response(theme)
+        loop = GtkLoop()
+
+        def handle_reply(theme):
+            self._print_theme_response(theme)
+            loop.end()
+
+        def handle_error(e):
+            loop.end()
+
+        quick_client().GetTheme(
+            reply_handler=handle_reply,
+            error_handler=handle_error
+        )
+        loop.start()
         return True
 
     def get_colours(self, args):
